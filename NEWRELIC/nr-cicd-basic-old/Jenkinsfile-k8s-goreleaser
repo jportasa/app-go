@@ -1,0 +1,31 @@
+pipeline {
+    agent none
+    stages {
+        stage('Run Tests') {
+            parallel {
+                stage('Release') {
+                    agent {
+                        kubernetes {
+                            label 'jenkins-linux-slave'
+                            yamlFile 'JenkinsKubernetesPodLinux.yaml'
+                            nodeSelector 'kubernetes.io/os=linux'
+                        }
+                    }
+                    environment {
+                        GITHUB_TOKEN = credentials('jenkins_github_token')
+                        PROJECT = 'create binaries'
+                    }
+                    steps {
+                        // The needed steps to create the binaries
+                        container('goreleaser') {
+                            sh """
+                                echo Workspace dir is ${pwd()}
+                                goreleaser release  --rm-dist
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,79 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+# Docu: https://eksctl.io/
+
+metadata:
+  name: EKS-cluster-joan-porta # <---------Cambiar
+  region: us-east-1 # <---------Cambiar
+
+# Docu: https://eksctl.io/usage/iamserviceaccounts/
+iam:
+    withOIDC: true
+    serviceAccounts:
+    # If you create a cluster without one serviceacount: eksctl create iamserviceaccount --config-file=<path>
+      - metadata:
+          name: s3-reader
+          # if no namespace is set, "default" will be used;
+          # the namespace will be created if it doesn't exist already
+          namespace: dev
+          labels: {aws-usage: "application"}
+        attachPolicyARNs:
+          - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+nodeGroups:
+  - name: mix
+    minSize: 1
+    maxSize: 5
+#    availabilityZones:
+#      - us-east-1b # <---------Cambiar
+#      - us-east-1c # <---------Cambiar
+    instancesDistribution:
+      maxPrice: 0.015
+      instanceTypes: ["t3.small", "t2.small"]
+      onDemandBaseCapacity: 0
+      onDemandPercentageAboveBaseCapacity: 25
+    privateNetworking: true
+    ssh:
+      publicKeyName: joan # <---------Cambiar
+    iam:
+      attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy # Mandatory
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy # Mandatory
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Mandatory
+      - arn:aws:iam::aws:policy/AWSCloudMapFullAccess # Para external-dns, LB pueda tener registro DNS
+      - arn:aws:iam::aws:policy/AutoScalingFullAccess # Necesario para el Cluster Autoscaling
+#      - arn:aws:iam::953835556803:policy/k8s-external-dns # Necesario external-dns
+#      - arn:aws:iam::953835556803:policy/ALBIngressControllerIAMPolicy # Necesario si tienes ALB+ingress, crear policy antes! ver README.
+#      - arn:aws:iam::953835556803:policy/k8s-logs-policy # Logs de Fluentd a Cloudwatch
+      #withAddOnPolicies:
+      #  autoscaler: true
+      #  externalDNS: true
+      #  cloudWatch: true
+      #  albIngress: true # Needed if you use ALB+ingress
+      #  certManager: true
+      #  imageBuilder: true
+    labels:
+      instance-type: mix
+    tags:
+      'k8s.io/cluster-autoscaler/enabled': 'value'
+      'k8s.io/cluster-autoscaler/EKS-cluster-joan-porta': 'value' # <---------Cambiar
+  - name: windows-ng
+    amiFamily: WindowsServer2019FullContainer
+    instanceType: t3.small
+    minSize: 1
+    maxSize: 2
+    ssh:
+      publicKeyName: joan
+    privateNetworking: true
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy # Mandatory
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy # Mandatory
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Mandatory
+        - arn:aws:iam::aws:policy/AWSCloudMapFullAccess # Para external-dns, LB pueda tener registro DNS
+        - arn:aws:iam::aws:policy/AutoScalingFullAccess # Necesario para el Cluster Autoscaling
+    labels:
+      instance-type: amiwin
+    tags:
+      'k8s.io/cluster-autoscaler/enabled': 'value'
+      'k8s.io/cluster-autoscaler/EKS-cluster-joan-porta': 'value' # <---------Cambiar

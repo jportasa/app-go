@@ -1,0 +1,46 @@
+pipeline {
+    agent none
+    environment {
+        PROJECT = "TESTING JENKINS SLAVE IN NR"
+    }
+    stages {
+        stage('Run Tests') {
+            parallel {
+                stage('Test on Windows') {
+                    agent {
+                        kubernetes {
+                            label 'jenkins-windows-slave'
+                            yamlFile 'JenkinsKubernetesPodWindows.yaml'
+                            nodeSelector 'kubernetes.io/os=windows'
+                        }
+                    }
+                    steps {
+                        // The needed steps for your testing
+                        container('windows') {
+                            bat 'go version'
+                            bat 'make -v'
+                        }
+                    }
+                }
+                stage('Test on Centos5') {
+                    agent {
+                        kubernetes {
+                            label 'jenkins-linux-slave'
+                            yamlFile 'JenkinsKubernetesPodLinux.yaml'
+                        }
+                    }
+                    steps {
+                        // The needed steps for your testing
+                        container('centos5-go') {
+                            sh """
+                                echo $PROJECT
+                                go version
+                                make -v
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

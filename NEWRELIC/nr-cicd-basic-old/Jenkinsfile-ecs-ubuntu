@@ -1,0 +1,24 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Tests') {
+            agent {
+                ecs {
+                   cloud 'jenkins-slave-ecs'
+                   taskDefinitionOverride 'jnlp-ubuntu'
+                   launchType 'FARGATE'
+                   subnets('subnet-08086cbe2d97a1ff1')
+                   securityGroups('sg-08f3f54702fb3992e')
+                   assignPublicIp true
+                }
+            }
+            steps {
+                sh '''
+                      cat /etc/issue
+                   '''
+
+            }
+        }
+    }
+}

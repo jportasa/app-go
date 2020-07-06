@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-windows
+  labels:
+     name: jenkins-windows-slave
+spec:
+  #serviceAccount: jenkins
+  containers:  # list of containers that you want present for your build, you can define a default container in the Jenkinsfile
+    - name: windows
+      image: mcr.microsoft.com/windows/nanoserver:1809
+      tty: true
+  nodeSelector:
+    kubernetes.io/os: "windows"

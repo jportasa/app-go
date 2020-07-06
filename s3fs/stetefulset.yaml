@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-statefulset
+  labels:
+    some.interesting.labels: wow
+spec:
+  replicas: 1
+  serviceName: my-statefulset
+  selector:
+    matchLabels:
+      some.interesting.labels: wow
+  template:
+    metadata:
+      labels:
+        some.interesting.labels: wow
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          volumeMounts:
+            - name: s3-shared
+              mountPath: /var/www/
+              mountPropagation: HostToContainer
+        - name: s3fs
+          image: josh9398/s3fs
+          securityContext:
+            privileged: true
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              value: "AKIA54FIHR7BVZE262TT"
+            - name: AWS_SECRET_ACCESS_KEY
+              value: "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"
+            - name: S3_BUCKET
+              value: "nr-test"
+            - name: MNT_POINT
+              value: "/mnt"
+            - name: S3_ENDPOINT
+              value: "<http://your.s3.endpoint:port>"
+          volumeMounts:
+            - name: s3-shared
+              mountPath: /mnt
+              mountPropagation: Bidirectional
+      volumes:
+      - name: s3-shared
+        emptyDir: {}

@@ -1,0 +1,31 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Tests') {
+            agent {
+                ecs {
+                   cloud 'jenkins-slave-ecs-windows'
+                   taskDefinitionOverride 'windows-simple-iis'
+                   launchType 'EC2'
+                   subnets('subnet-08086cbe2d97a1ff1')
+                   securityGroups('sg-08f3f54702fb3992e')
+                   taskrole 'arn:aws:iam::953835556803:role/ecsInstanceRole'
+                   executionRole 'arn:aws:iam::953835556803:role/ecsInstanceRole'
+                   assignPublicIp true
+                }
+            }
+            steps {
+                sh '''
+                    pwd
+                    env
+                    cd golang-simple-app
+                    make test
+                    make build
+                    aws s3 cp ./target/webapp s3://nr-artifacts/webapp
+                   '''
+
+            }
+        }
+    }
+}

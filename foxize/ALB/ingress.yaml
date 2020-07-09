@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations: # Docu: https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    external-dns.alpha.kubernetes.io/hostname: jporta.de #puppu.pepe.es, poropopo.pepe.es # Dominios separados por comas, los dominios hay que crearlsos previamente en Route53
+    kubernetes.io/ingress.class: alb  # Levantará un ALB en AWS, la etiqueta hace match con la definición del ALB
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:eu-west-1:953835556803:certificate/f1343c98-6e40-4b08-8df5-ff760ba26b4c' # Certificados separados por comas
+  name: ingress-front
+  namespace: pro
+  labels:
+    app: ingress-front
+spec:
+  rules:
+  - host: jporta.de
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: "my-nginx"
+          servicePort: 80
+

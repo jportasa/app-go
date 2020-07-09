@@ -3,16 +3,16 @@
 # Networking recommendations: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 # Manually: Crear 3 subnets nuevas privadas para los nodos.
 # Manually: Crear 1xIG (necesatio si tenemos NATGW) y atacharlo a la VPC.
-# Manually: Crear un 1x NAT GW con su EIP para que nodos privados que estna en las diferentes AZ's puedan salir a Internet. Añadir ruta 0/0 a la route table.
+# Manually: Crear un 1x NAT GW en la AZ publica con su EIP para que nodos privados que estna en las diferentes AZ's puedan salir a Internet. Añadir ruta 0/0 a la route table.
 # Slack support https://slack.weave.works/
-
 
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: EKS-cluster-foxize # <---------Cambiar
-  region: eu-west-1 # <---- cambiar para prod
+  name: EKS-cluster-foxize
+  region: eu-west-1
+  version: "1.16" # k8s version
 
 # Docu: https://eksctl.io/usage/iamserviceaccounts/
 iam:
@@ -30,7 +30,6 @@ iam:
         - "arn:aws:iam::aws:policy/AmazonSESFullAccess" # Para acceder a SES
         - "arn:aws:iam::aws:policy/AWSCertificateManagerFullAccess" # Para acceder a ACM
 
-# datos de PRO real
 vpc:
   id: "vpc-0c9405fa17407592e"
   cidr: "172.31.0.0/16"
@@ -60,52 +59,48 @@ vpc:
 
 nodeGroups:
   - name: front
-    minSize: 2
+    minSize: 1
     maxSize: 4
     volumeSize: 20
     availabilityZones:
-      - eu-west-1a # <---- cambiar par prod
-      - eu-west-1b
-      - eu-west-1c
+      - eu-west-1a
+      # - eu-west-1b
+      # - eu-west-1c
     instancesDistribution:
       maxPrice: 0.0076
       instanceTypes: ["t2.small", "t3.small", "t3a.small"]
-      onDemandBaseCapacity: 0
-      onDemandPercentageAboveBaseCapacity: 25
+      onDemandBaseCapacity: 0 #  If you leave it set to 0, On-Demand Instances are launched as a percentage of the Auto Scaling group's desired capacity, per the OnDemandPercentageAboveBaseCapacity setting.
+      onDemandPercentageAboveBaseCapacity: 25 # The minimum amount of the Auto Scaling group's capacity that must be fulfilled by On-Demand Instances
     privateNetworking: true
     ssh:
-      publicKeyName: joan-key # <---------Cambiar
+      publicKeyName: joan-key
     iam:
-    #  attachPolicyARNs:
-    #    - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy # Mandatory
-    #    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy # Mandatory
-    #    - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Mandatory
-    #   - arn:aws:iam::aws:policy/AWSCloudMapFullAccess # Para external-dns, LB pueda tener registro DNS
-    #   - arn:aws:iam::aws:policy/AutoScalingFullAccess # Necesario para el Cluster Autoscaling
-    #   - arn:aws:iam::586403476046:policy/k8s-external-dns # Necesario external-dns
-    #   - arn:aws:iam::586403476046:policy/ALBIngressControllerIAMPolicy # Necesario si tienes ALB+ingress, crear policy antes! ver README.
-    #    - arn:aws:iam::586403476046:policy/k8s-logs-policy # Logs de Fluentd a Cloudwatch
-      withAddOnPolicies:
-        autoscaler: true
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy # Mandatory
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy # Mandatory
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Mandatory
+      withAddonPolicies:
+        autoScaler: true
         externalDNS: true
         cloudWatch: true
-        albIngress: true # Needed if you use ALB+ingress
+        albIngress: true   # Needed if you use ALB+ingress
         certManager: true
-        imageBuilder: true
+        imageBuilder: true # Allow r/w access to ECR
     labels:
       nodegroup: front
     tags:
-      'k8s.io/cluster-autoscaler/enabled': 'value'
-      'k8s.io/cluster-autoscaler/EKS-cluster-foxize': 'value' # <---------Cambiar
+      # EC2 tags required for cluster-autoscaler auto-discovery
+      'k8s.io/cluster-autoscaler/enabled': 'true'
+      'k8s.io/cluster-autoscaler/EKS-cluster-foxize': ''
 
   - name: back
-    minSize: 1
-    maxSize: 3
+    minSize: 0
+    maxSize: 0
     volumeSize: 20
     availabilityZones:
-      - eu-west-1a # <---- cambiar par prod
-      - eu-west-1b
-      - eu-west-1c
+      - eu-west-1a
+      # - eu-west-1b
+      # - eu-west-1c
     instancesDistribution:
       maxPrice: 0.0076
       instanceTypes: ["t2.small", "t3.small", "t3a.small"]
@@ -113,26 +108,22 @@ nodeGroups:
       onDemandPercentageAboveBaseCapacity: 25
     privateNetworking: true
     ssh:
-      publicKeyName: joan-key # <---------Cambiar
+      publicKeyName: joan-key
     iam:
-    #  attachPolicyARNs:
-    #    - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy # Mandatory
-    #    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy # Mandatory
-    #    - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Mandatory
-    #    - arn:aws:iam::aws:policy/AWSCloudMapFullAccess # Para external-dns, LB pueda tener registro DNS
-    #    - arn:aws:iam::aws:policy/AutoScalingFullAccess # Necesario para el Cluster Autoscaling
-    #    - arn:aws:iam::586403476046:policy/k8s-external-dns # Necesario external-dns
-    #    - arn:aws:iam::586403476046:policy/ALBIngressControllerIAMPolicy # Necesario si tienes ALB+ingress, crear policy antes! ver README.
-    #    - arn:aws:iam::586403476046:policy/k8s-logs-policy # Logs de Fluentd a Cloudwatch
-      withAddOnPolicies:
-        autoscaler: true
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy # Mandatory
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy # Mandatory
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Mandatory
+      withAddonPolicies:
+        autoScaler: true
         externalDNS: true
         cloudWatch: true
-        albIngress: true # Needed if you use ALB+ingress
+        albIngress: true   # Needed if you use ALB+ingress
         certManager: true
-        imageBuilder: true
+        imageBuilder: true # Allow r/w access to ECR
     labels:
       nodegroup: back
     tags:
-      'k8s.io/cluster-autoscaler/enabled': 'value' # Necesario para el Autoscaling de nodos
-      'k8s.io/cluster-autoscaler/EKS-cluster-foxize': 'value' # Necesario para el Autoscaling de nodos
+      # EC2 tags required for cluster-autoscaler auto-discovery
+      'k8s.io/cluster-autoscaler/enabled': 'true'
+      'k8s.io/cluster-autoscaler/EKS-cluster-foxize': ''

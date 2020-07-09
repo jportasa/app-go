@@ -16,11 +16,12 @@ spec:
         some.interesting.labels: wow
     spec:
       containers:
-        - name: nginx
-          image: nginx
+        - name: repo-rpm-updater
+          image: jportasa/repo-rpm-updater:1.0
+          command: ["sleep", "99999999999"]
           volumeMounts:
             - name: s3-shared
-              mountPath: /var/www/
+              mountPath: /data/
               mountPropagation: HostToContainer
         - name: s3fs
           image: josh9398/s3fs
@@ -36,7 +37,7 @@ spec:
             - name: MNT_POINT
               value: "/mnt"
             - name: S3_ENDPOINT
-              value: "<http://your.s3.endpoint:port>"
+              value: "https://s3.amazonaws.com"
           volumeMounts:
             - name: s3-shared
               mountPath: /mnt

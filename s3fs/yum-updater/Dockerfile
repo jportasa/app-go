@@ -1,10 +1,10 @@
-FROM centos:latest
+FROM centos:7
 
 RUN yum install -y createrepo && yum clean all
 
 VOLUME /data
 
-COPY docker-entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+COPY entrypoint.sh /entrypoint.sh
+#ENTRYPOINT ["/entrypoint.sh"]
 
-CMD [ "createrepo" ]
+#CMD [ "createrepo" ]

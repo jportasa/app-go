@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6172474f-e622-4126-b040-475e5006193d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group" beforeDir="false" afterPath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/.circleci/config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/.markdownlintrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/.pre-commit-config.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/examples/simple/main.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/examples/simple/outputs.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/examples/simple/variables.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/main.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/outputs.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/vars.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case 2/modules/iam-user-group/versions.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group" beforeDir="false" afterPath="$PROJECT_DIR$/terraform-case/modules/iam-user-group" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/.circleci/config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/.markdownlintrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/.pre-commit-config.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/examples/simple/main.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/examples/simple/outputs.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/examples/simple/variables.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/main.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/outputs.tf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/vars.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform-case/modules/iam-user-group/versions.tf" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/terraform-case" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1iNP7c4mOol1B78jgJxtJZhyYFc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/terraform-case" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6172474f-e622-4126-b040-475e5006193d" name="Default Changelist" comment="" />
+      <created>1601744909833</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601744909833</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="583" y="-926" key="CommitChangelistDialog2" timestamp="1601885295023">
+      <screen x="0" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="583" y="-926" key="CommitChangelistDialog2/-1920.-952.1920.1057/0.23.1280.777/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1601885295023" />
+  </component>
+</project>
